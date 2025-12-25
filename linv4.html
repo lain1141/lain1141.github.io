@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Para Lin 💞</title>
+  <style>
+    /* Fondo con tulipanes */
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to top, #ffdde1, #ee9ca7);
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    /* Botón inicial */
+    #startBtn {
+      padding: 15px 30px;
+      font-size: 20px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      background: #ff7eb9;
+      color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+
+    #startBtn:hover {
+      transform: scale(1.05);
+    }
+
+    /* Barra de carga */
+    #loaderContainer {
+      display: none;
+      width: 80%;
+      max-width: 400px;
+      height: 25px;
+      border-radius: 15px;
+      background: #ffe4f0;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    #loader {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(to right, #ff9ccf, #ff6fa3);
+      border-radius: 15px;
+      transition: width 0.3s;
+    }
+
+    /* Carta estética */
+    #messageCard {
+      display: none;
+      background: rgba(255,255,255,0.95);
+      padding: 30px 35px;
+      border-radius: 20px;
+      max-width: 420px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      animation: fadeIn 1s ease forwards;
+      position: relative;
+    }
+
+    #messageCard h1 {
+      margin-top: 0;
+      color: #e75480;
+    }
+
+    #messageCard p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .firma {
+      margin-top: 20px;
+      font-style: italic;
+      color: #666;
+    }
+
+    @keyframes fadeIn {
+      from {opacity:0; transform: translateY(20px);}
+      to {opacity:1; transform: translateY(0);}
+    }
+
+    /* Tulipanes animados */
+    .tulipan {
+      position: absolute;
+      bottom: -50px;
+      width: 30px;
+      height: 60px;
+      background: #ff6fa3;
+      border-radius: 15px 15px 0 0;
+      animation: floatUp 10s linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% {transform: translateY(0) rotate(0deg);}
+      100% {transform: translateY(-120vh) rotate(360deg);}
+    }
+  </style>
+</head>
+<body>
+
+  <button id="startBtn">Para Lin... 💖</button>
+
+  <div id="loaderContainer">
+    <div id="loader"></div>
+  </div>
+
+  <div id="messageCard">
+    <h1>Buenos días Lin 🌸</h1>
+    <p>
+      No sé en qué momento apareciste en mis pensamientos,<br>
+      pero aquí estás, haciendo el día un poquito más bonito.<br>
+      Que hoy te sonría la vida, y si no… al menos este mensaje.
+    </p>
+    <div class="firma">— Alguien que pensó en ti</div>
+  </div>
+
+  <script>
+    const btn = document.getElementById('startBtn');
+    const loaderContainer = document.getElementById('loaderContainer');
+    const loader = document.getElementById('loader');
+    const messageCard = document.getElementById('messageCard');
+
+    btn.addEventListener('click', () => {
+      btn.style.display = 'none';
+      loaderContainer.style.display = 'block';
+
+      let width = 0;
+      const interval = setInterval(() => {
+        width += Math.random() * 10; // carga con toque orgánico
+        if (width >= 100) {
+          width = 100;
+          clearInterval(interval);
+          loaderContainer.style.display = 'none';
+          messageCard.style.display = 'block';
+        }
+        loader.style.width = width + '%';
+      }, 300);
+    });
+
+    // Tulipanes animados aleatorios
+    for(let i=0;i<12;i++){
+      const t = document.createElement('div');
+      t.classList.add('tulipan');
+      t.style.left = Math.random()*100+'vw';
+      t.style.animationDuration = (8+Math.random()*5)+'s';
+      t.style.background = `hsl(${330+Math.random()*20}, 90%, 70%)`;
+      document.body.appendChild(t);
+    }
+  </script>
+
+</body>
+</html>
