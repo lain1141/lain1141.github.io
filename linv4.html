@@ -1,161 +1,490 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Para Lin 💞</title>
-  <style>
-    /* Fondo con tulipanes */
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(to top, #ffdde1, #ee9ca7);
-      font-family: 'Segoe UI', sans-serif;
-      overflow: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Lin 💖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    /* Botón inicial */
-    #startBtn {
-      padding: 15px 30px;
-      font-size: 20px;
-      border-radius: 12px;
-      border: none;
-      cursor: pointer;
-      background: #ff7eb9;
-      color: white;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      transition: transform 0.2s;
-    }
+        body {
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe5f0 50%, #fff0f5 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
 
-    #startBtn:hover {
-      transform: scale(1.05);
-    }
+        .tulip-bg {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.6;
+            animation: float 15s infinite ease-in-out;
+            filter: drop-shadow(0 2px 4px rgba(255, 105, 180, 0.2));
+        }
 
-    /* Barra de carga */
-    #loaderContainer {
-      display: none;
-      width: 80%;
-      max-width: 400px;
-      height: 25px;
-      border-radius: 15px;
-      background: #ffe4f0;
-      overflow: hidden;
-      margin-top: 20px;
-    }
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
 
-    #loader {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(to right, #ff9ccf, #ff6fa3);
-      border-radius: 15px;
-      transition: width 0.3s;
-    }
+        .container {
+            text-align: center;
+            z-index: 10;
+            max-width: 600px;
+            padding: 20px;
+            width: 90%;
+        }
 
-    /* Carta estética */
-    #messageCard {
-      display: none;
-      background: rgba(255,255,255,0.95);
-      padding: 30px 35px;
-      border-radius: 20px;
-      max-width: 420px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      animation: fadeIn 1s ease forwards;
-      position: relative;
-    }
+        .initial-button {
+            background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+            color: white;
+            border: none;
+            padding: 25px 60px;
+            font-size: 1.8rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.4);
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
 
-    #messageCard h1 {
-      margin-top: 0;
-      color: #e75480;
-    }
+        .initial-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.6);
+        }
 
-    #messageCard p {
-      font-size: 16px;
-      line-height: 1.6;
-      color: #333;
-    }
+        .initial-button:active {
+            transform: translateY(-2px);
+        }
 
-    .firma {
-      margin-top: 20px;
-      font-style: italic;
-      color: #666;
-    }
+        .loading-container {
+            display: none;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
 
-    @keyframes fadeIn {
-      from {opacity:0; transform: translateY(20px);}
-      to {opacity:1; transform: translateY(0);}
-    }
+        .loading-text {
+            color: #ff1493;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
 
-    /* Tulipanes animados */
-    .tulipan {
-      position: absolute;
-      bottom: -50px;
-      width: 30px;
-      height: 60px;
-      background: #ff6fa3;
-      border-radius: 15px 15px 0 0;
-      animation: floatUp 10s linear infinite;
-    }
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.2);
+            border: 2px solid rgba(255, 105, 180, 0.3);
+        }
 
-    @keyframes floatUp {
-      0% {transform: translateY(0) rotate(0deg);}
-      100% {transform: translateY(-120vh) rotate(360deg);}
-    }
-  </style>
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff69b4 0%, #ff1493 50%, #ff69b4 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+            transition: width 0.3s ease;
+            border-radius: 20px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .game-container {
+            display: none;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .game-header {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.2);
+        }
+
+        .game-instructions {
+            color: #ff1493;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .counter {
+            font-size: 1.5rem;
+            color: #ff69b4;
+            font-weight: bold;
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+        }
+
+        .card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 100%);
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(255, 105, 180, 0.2);
+            border: 3px solid rgba(255, 182, 193, 0.5);
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .card:hover:not(.flipped):not(.matched) {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(255, 105, 180, 0.3);
+        }
+
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backface-visibility: hidden;
+            border-radius: 12px;
+        }
+
+        .card-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backface-visibility: hidden;
+            transform: rotateY(180deg);
+            border-radius: 12px;
+        }
+
+        .card.flipped .card-back {
+            transform: rotateY(180deg);
+        }
+
+        .card.flipped .card-front {
+            transform: rotateY(0deg);
+        }
+
+        .card.matched {
+            background: linear-gradient(135deg, #98fb98 0%, #90ee90 100%);
+            cursor: default;
+            animation: matchPulse 0.6s ease;
+        }
+
+        @keyframes matchPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .letter-container {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.3);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 182, 193, 0.5);
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .greeting {
+            font-size: 2.2rem;
+            color: #ff1493;
+            margin-bottom: 30px;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+
+        .message {
+            font-size: 1.8rem;
+            color: #ff69b4;
+            font-weight: bold;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff69b4;
+            opacity: 0;
+            animation: confettiFall 3s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .initial-button {
+                font-size: 1.4rem;
+                padding: 20px 40px;
+            }
+
+            .memory-grid {
+                gap: 10px;
+                padding: 15px;
+            }
+
+            .card {
+                font-size: 2.5rem;
+            }
+
+            .greeting {
+                font-size: 1.8rem;
+            }
+
+            .message {
+                font-size: 1.5rem;
+            }
+
+            .letter-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <button class="initial-button" id="startBtn">Para Lin… 💖</button>
+        
+        <div class="loading-container" id="loadingContainer">
+            <div class="loading-text">Preparando algo especial...</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
 
-  <button id="startBtn">Para Lin... 💖</button>
+        <div class="game-container" id="gameContainer">
+            <div class="game-header">
+                <div class="game-instructions">¡Encuentra las parejas! 🌹</div>
+                <div class="counter">Parejas: <span id="pairs">0</span> / 6</div>
+            </div>
+            <div class="memory-grid" id="memoryGrid"></div>
+        </div>
 
-  <div id="loaderContainer">
-    <div id="loader"></div>
-  </div>
+        <div class="letter-container" id="letterContainer">
+            <div class="greeting">Felicidades amoor 🎉</div>
+            <div class="message">Tqm Lin 💖</div>
+        </div>
+    </div>
 
-  <div id="messageCard">
-    <h1>Buenos días Lin 🌸</h1>
-    <p>
-      No sé en qué momento apareciste en mis pensamientos,<br>
-      pero aquí estás, haciendo el día un poquito más bonito.<br>
-      Que hoy te sonría la vida, y si no… al menos este mensaje.
-    </p>
-    <div class="firma">— Alguien que pensó en ti</div>
-  </div>
+    <script>
+        const flowers = ['🌹', '🌹', '🌼', '🌼', '🌺', '🌺', '🌸', '🌸', '🌷', '🌷', '💐', '💐'];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let canFlip = true;
 
-  <script>
-    const btn = document.getElementById('startBtn');
-    const loaderContainer = document.getElementById('loaderContainer');
-    const loader = document.getElementById('loader');
-    const messageCard = document.getElementById('messageCard');
-
-    btn.addEventListener('click', () => {
-      btn.style.display = 'none';
-      loaderContainer.style.display = 'block';
-
-      let width = 0;
-      const interval = setInterval(() => {
-        width += Math.random() * 10; // carga con toque orgánico
-        if (width >= 100) {
-          width = 100;
-          clearInterval(interval);
-          loaderContainer.style.display = 'none';
-          messageCard.style.display = 'block';
+        // Crear flores de fondo flotantes
+        function createBackgroundFlowers() {
+            const bgFlowers = ['🌷', '🌸', '🌺', '🌼', '💐'];
+            for (let i = 0; i < 12; i++) {
+                setTimeout(() => {
+                    const flower = document.createElement('div');
+                    flower.className = 'tulip-bg';
+                    flower.textContent = bgFlowers[Math.floor(Math.random() * bgFlowers.length)];
+                    flower.style.left = Math.random() * 100 + '%';
+                    flower.style.animationDuration = (10 + Math.random() * 10) + 's';
+                    flower.style.animationDelay = Math.random() * 5 + 's';
+                    document.body.appendChild(flower);
+                }, i * 200);
+            }
         }
-        loader.style.width = width + '%';
-      }, 300);
-    });
 
-    // Tulipanes animados aleatorios
-    for(let i=0;i<12;i++){
-      const t = document.createElement('div');
-      t.classList.add('tulipan');
-      t.style.left = Math.random()*100+'vw';
-      t.style.animationDuration = (8+Math.random()*5)+'s';
-      t.style.background = `hsl(${330+Math.random()*20}, 90%, 70%)`;
-      document.body.appendChild(t);
-    }
-  </script>
+        // Mezclar array
+        function shuffle(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
 
+        // Crear memorama
+        function createMemoryGame() {
+            const grid = document.getElementById('memoryGrid');
+            const shuffled = shuffle(flowers);
+            
+            shuffled.forEach((flower, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.flower = flower;
+                card.dataset.index = index;
+                
+                const back = document.createElement('div');
+                back.className = 'card-back';
+                back.textContent = '❓';
+                
+                const front = document.createElement('div');
+                front.className = 'card-front';
+                front.textContent = flower;
+                
+                card.appendChild(back);
+                card.appendChild(front);
+                grid.appendChild(card);
+                
+                card.addEventListener('click', () => flipCard(card));
+            });
+        }
+
+        // Voltear carta
+        function flipCard(card) {
+            if (!canFlip || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+            
+            card.classList.add('flipped');
+            flippedCards.push(card);
+            
+            if (flippedCards.length === 2) {
+                canFlip = false;
+                checkMatch();
+            }
+        }
+
+        // Verificar coincidencia
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            const flower1 = card1.dataset.flower;
+            const flower2 = card2.dataset.flower;
+            
+            if (flower1 === flower2) {
+                setTimeout(() => {
+                    card1.classList.add('matched');
+                    card2.classList.add('matched');
+                    matchedPairs++;
+                    document.getElementById('pairs').textContent = matchedPairs;
+                    
+                    flippedCards = [];
+                    canFlip = true;
+                    
+                    if (matchedPairs === 6) {
+                        setTimeout(showLetter, 800);
+                    }
+                }, 500);
+            } else {
+                setTimeout(() => {
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                    flippedCards = [];
+                    canFlip = true;
+                }, 1000);
+            }
+        }
+
+        // Crear confeti
+        function createConfetti() {
+            const colors = ['#ff69b4', '#ff1493', '#ffb6c1', '#ffc0cb', '#ffd700', '#ffff00'];
+            for (let i = 0; i < 80; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '0';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 25);
+            }
+        }
+
+        // Barra de progreso
+        function animateProgress() {
+            const progressFill = document.getElementById('progressFill');
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    setTimeout(showGame, 500);
+                }
+                progressFill.style.width = progress + '%';
+            }, 200);
+        }
+
+        // Mostrar juego
+        function showGame() {
+            document.getElementById('loadingContainer').style.display = 'none';
+            document.getElementById('gameContainer').style.display = 'block';
+            createMemoryGame();
+        }
+
+        // Mostrar carta
+        function showLetter() {
+            document.getElementById('gameContainer').style.display = 'none';
+            document.getElementById('letterContainer').style.display = 'block';
+            createConfetti();
+        }
+
+        // Evento del botón
+        document.getElementById('startBtn').addEventListener('click', function() {
+            this.style.display = 'none';
+            document.getElementById('loadingContainer').style.display = 'block';
+            animateProgress();
+        });
+
+        // Inicializar
+        createBackgroundFlowers();
+    </script>
 </body>
 </html>
